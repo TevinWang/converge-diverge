@@ -11,7 +11,7 @@
 </head>
 
 <body>
-	<p class="top"> divergence/convergence tests - mrs. shak calculus project </p>
+	<p class="top"> divergence/convergence tests - calculus project </p>
   
 	<h1>What test should you use? </h1>
 	<div class="container">
@@ -60,12 +60,13 @@
       }
     }
 
+    var apikey = "key"
+
     function findTest() {
       //var req = new XMLHttpRequest();
-      
 
       query = "converge%20" + enteredMath;
-      url = "https://api.wolframalpha.com/v2/query?appid=YX64U2-XWQ3WPW6GA&input="+query+"&includepodid=Result&podstate=Show%20tests&format=plaintext&output=json";
+      url = "https://api.wolframalpha.com/v2/query?appid="+apikey+"&input="+query+"&includepodid=Result&podstate=Show%20tests&format=plaintext&output=json";
       console.log(url)
 
       /*
