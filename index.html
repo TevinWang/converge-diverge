@@ -1,13 +1,113 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="src/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>repl.it</title>
+	<link href="style.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" href="./mathquill/mathquill.css" />
+
+</head>
+
+<body>
+	<p class="top"> divergence/convergence tests - mrs. shak calculus project </p>
+  
+	<h1>What test should you use? </h1>
+	<div class="container">
+		<h2 style="color: black; font-size: 30px; font-weight: 200;">Σ</h2>
+		<p class="math"><span id="answer"></span></p>
+    <button onclick="findTest()">Determine test</button>
+ 
+  </div>
+  <div class="answer">
+    <h2 class="margin">The test to use is</h2>
+     <h2 class="test" id="test"><b>______</b></h2>
+  </div>
+  <p></>
+  <p class="top"> Created with </p>
+  <img src="wolfram.png" alt="WolframAlpha" style="width:150px;">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pure.js/2.83/pure.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/request/2.88.2/index.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js">
+	</script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="./mathquill/mathquill.js">
+	</script>
+  <script type="module" src="script.js">
+	</script>
+  <script>
+    
+		var MQ = MathQuill.getInterface(2);
+    var answerSpan = document.getElementById('answer');
+    var enteredMath = "";
+    var answerMathField = MQ.MathField(answerSpan, {
+      handlers: {
+        edit: function() {
+          enteredMath = answerMathField.latex(); // Get entered math in LaTeX format
+          console.log(enteredMath)
+        }
+      }
+    });
+    
+    function wait(ms){
+      var start = new Date().getTime();
+      var end = start;
+      while(end < start + ms) {
+        end = new Date().getTime();
+      }
+    }
+
+    function findTest() {
+      //var req = new XMLHttpRequest();
+      
+
+      query = "converge%20" + enteredMath;
+      url = "https://api.wolframalpha.com/v2/query?appid=YX64U2-XWQ3WPW6GA&input="+query+"&includepodid=Result&podstate=Show%20tests&format=plaintext&output=json";
+      console.log(url)
+
+      /*
+      req.open('GET', url);
+      req.send();
+      req.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          // Typical action to be performed when the document is ready:
+            console.log(req.responseText);
+        }
+      };
+      */
+      console.log("1");
+      document.getElementById("test").innerHTML = '...';
+      $.ajax({
+            url: url,
+            dataType: "jsonp",
+            success: function(data) {
+                 document.getElementById("test").innerHTML = data.queryresult.pods[0].subpods[0].plaintext.split('|')[1].split('\n')[1];
+            }
+    });
+      console.log("2");
+      // console.log(r);
+
+      //r = the page contents;
+      /*
+      results = r.split("{");
+      temp = results[4];
+      results = temp.split('"');
+
+      temp = results[7];
+      results = temp.split("\\n");
+
+      test = (results[2].split(" | "))[0];
+      
+      document.getElementById("test").innerHTML = test;
+      */
+
+    };
+
+  </script>
+	
+</body>
+
 </html>
